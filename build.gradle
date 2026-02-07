@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.1.12'
+}
+
+group = 'org.automation'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'net.serenity-bdd:serenity-core:4.1.12'
+    testImplementation 'net.serenity-bdd:serenity-junit5:4.1.12'
+
+    testImplementation 'net.serenity-bdd:serenity-cucumber:4.1.12'
+    testImplementation 'io.cucumber:cucumber-java:7.16.1'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.16.1'
+
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.rest-assured:json-path:5.4.0'
+    testImplementation 'io.rest-assured:xml-path:5.4.0'
+
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    testImplementation 'org.apache.logging.log4j:log4j-core:2.23.1'
+    testImplementation 'org.apache.logging.log4j:log4j-api:2.23.1'
+}
+
+test {
+    useJUnitPlatform()
+
+    systemProperty "serenity.outputDirectory", "$buildDir/target/site/serenity"
+    systemProperty "serenity.parallel.execution", "true"
+}
