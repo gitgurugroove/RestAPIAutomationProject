@@ -8,35 +8,87 @@ version = '1.0-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
-    testImplementation 'net.serenity-bdd:serenity-core:4.1.12'
-    testImplementation 'net.serenity-bdd:serenity-junit5:4.1.12'
+    testImplementation 'net.serenity-bdd:serenity-core:4.1.20'
+    testImplementation "net.serenity-bdd:serenity-rest-assured:4.1.20"
+    testImplementation 'net.serenity-bdd:serenity-junit:4.1.20'
+    testImplementation "junit:junit:4.13.2"
 
-    testImplementation 'net.serenity-bdd:serenity-cucumber:4.1.12'
+    testImplementation 'net.serenity-bdd:serenity-cucumber:4.1.20'
     testImplementation 'io.cucumber:cucumber-java:7.16.1'
-    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.16.1'
+    testImplementation "io.cucumber:cucumber-junit:7.16.1"
+//    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.16.1'
 
     testImplementation 'io.rest-assured:rest-assured:5.4.0'
     testImplementation 'io.rest-assured:json-path:5.4.0'
     testImplementation 'io.rest-assured:xml-path:5.4.0'
 
     testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation "org.assertj:assertj-core:3.24.2"
 
-    testImplementation 'org.apache.logging.log4j:log4j-core:2.23.1'
-    testImplementation 'org.apache.logging.log4j:log4j-api:2.23.1'
+    testImplementation "org.apache.logging.log4j:log4j-api:2.23.1"
+    testImplementation "org.apache.logging.log4j:log4j-core:2.23.1"
+    testImplementation "org.assertj:assertj-core:3.24.2"
+    testImplementation "ch.qos.logback:logback-classic:1.4.14"
+}
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-Xlint:deprecation']
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'com.google.guava' && details.requested.name == 'guava') {
+            details.useVersion '32.1.2-jre' // pick the latest stable version you want
+            details.because 'Avoid runtime sun.misc.Unsafe terminal deprecation warnings from older Guava'
+        }
+    }
 }
 
 test {
-    useJUnitPlatform()
-
-    systemProperty "serenity.outputDirectory", "$buildDir/target/site/serenity"
+//    useJUnitPlatform()
+    useJUnit()
+//    systemProperty "serenity.outputDirectory", "$buildDir/target/site/serenity"
     systemProperty "serenity.parallel.execution", "true"
+    systemProperty "serenity.outputDirectory", "target/site/serenity"
+    systemProperties(System.getProperties())
+
+}
+
+tasks.register('runCucumber', Test) {
+    description = 'Runs Cucumber tests using JUnit Platform'
+    group = 'verification'
+
+//    useJUnitPlatform()
+    useJUnit()
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    systemProperty "cucumber.filter.tags", "@smoke"
+}
+tasks.register('runSmoke', Test) {
+    group = 'verification'
+    description = 'Run smoke tests'
+
+//    useJUnitPlatform()
+    useJUnit()
+    systemProperty "cucumber.filter.tags", "@smoke"
+}
+
+tasks.register('runRegression', Test) {
+    group = 'verification'
+    description = 'Run regression tests'
+
+//    useJUnitPlatform()
+    useJUnit()
+    systemProperty "cucumber.filter.tags", "@regression"
 }

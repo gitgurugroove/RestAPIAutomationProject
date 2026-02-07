@@ -1,0 +1,107 @@
+{
+  "personalizations": [
+    {
+      "to": [
+        {
+          "email": "rahul.sharma@gmail.com",
+          "name": "Rahul Sharma"
+        },
+        {
+          "email": "priya.verma@gmail.com",
+          "name": "Priya Verma"
+        }
+      ],
+      "cc": [
+        {
+          "email": "anita.singh@gmail.com",
+          "name": "Anita Singh"
+        }
+      ],
+      "bcc": [
+        {
+          "email": "finance.team@acmecorp.com",
+          "name": "Finance Team"
+        }
+      ]
+    },
+    {
+      "from": {
+        "email": "sales@acmecorp.com",
+        "name": "AcmeCorp Sales Team"
+      },
+      "to": [
+        {
+          "email": "sushilyadav0606@gmail.com",
+          "name": "Sushil Yadav"
+        }
+      ],
+      "bcc": [
+        {
+          "email": "audit@acmecorp.com",
+          "name": "Audit Team"
+        }
+      ]
+    }
+  ],
+  "from": {
+    "email": "orders@acmecorp.com",
+    "name": "AcmeCorp Order Confirmation"
+  },
+  "reply_to": {
+    "email": "support@acmecorp.com",
+    "name": "AcmeCorp Customer Support"
+  },
+  "subject": "Your Order Confirmation – AcmeCorp",
+  "content": [
+    {
+      "type": "text/html",
+      "value": "<p>Hello,</p><p>Your order has been successfully placed with <strong>AcmeCorp</strong>.</p><p>We appreciate your business and will notify you once the order is shipped.</p><p>%open-track%</p>"
+    }
+  ],
+  "attachments": [
+    {
+      "content": "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KCiAgICA8aGVhZD4KICAgICAgICA8bWV0YSBjaGFyc2V0PSJVVEYtOCI+CiAgICAgICAgPHRpdGxlPk9yZGVyIERldGFpbHM8L3RpdGxlPgogICAgPC9oZWFkPgogICAgPGJvZHk+CiAgICAgICAgPHA+T3JkZXIgRGV0YWlsczwvcD4KICAgIDwvYm9keT4KPC9odG1sPg==",
+      "filename": "order-details.html",
+      "type": "text/html",
+      "disposition": "attachment"
+    }
+  ],
+  "categories": [
+    "order",
+    "transactional",
+    "confirmation"
+  ],
+  "send_at": 1717260400,
+  "batch_id": "batch_ORD_2025_02_07_001",
+  "asm": {
+    "group_id": 98765,
+    "groups_to_display": [
+      98765
+    ]
+  },
+  "ip_pool_name": "transactional_emails",
+  "mail_settings": {
+    "bypass_list_management": {
+      "enable": false
+    },
+    "footer": {
+      "enable": true
+    },
+    "sandbox_mode": {
+      "enable": false
+    }
+  },
+  "tracking_settings": {
+    "click_tracking": {
+      "enable": true,
+      "enable_text": false
+    },
+    "open_tracking": {
+      "enable": true,
+      "substitution_tag": "%open-track%"
+    },
+    "subscription_tracking": {
+      "enable": false
+    }
+  }
+}

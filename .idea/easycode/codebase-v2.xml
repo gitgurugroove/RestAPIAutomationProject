@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/src/main/java/org/automation/Main.java;C:/Users/sushi/IdeaProjects/RestAPIAutomationProject/src/test/java/apiLogic/MailSendAPI.java;C:/Users/sushi/IdeaProjects/RestAPIAutomationProject/src/test/java/stepDefinitions/SendGridMailSetps.java;C:/Users/sushi/IdeaProjects/RestAPIAutomationProject/src/test/java/utils/SendGridPayloadBuilder.java;C:/Users/sushi/IdeaProjects/RestAPIAutomationProject/src/test/resources/apiRequests/sendGridMailSend.json;C:/Users/sushi/IdeaProjects/RestAPIAutomationProject/README.md" />
+  </component>
+</project>
