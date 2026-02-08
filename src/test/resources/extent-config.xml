@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extent>
+    <configuration>
+        <theme>standard</theme>
+        <documentTitle>API Automation Report</documentTitle>
+        <reportName>SendGrid API Tests</reportName>
+        <encoding>utf-8</encoding>
+        <timelineEnabled>true</timelineEnabled>
+    </configuration>
+</extent>

@@ -2,6 +2,7 @@ package stepDefinitions;
 
 import apiLogic.MailSendAPI;
 import io.cucumber.java.PendingException;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -61,5 +62,8 @@ public class SendGridMailSteps {
         assertThat(mailSendAPI.getResponse().getBody().asString(), anyOf(is(emptyString()), nullValue()));
     }
 
-
+    @And("the response body contains message {string}")
+    public void theResponseBodyContainsMessage(String message) {
+        assertThat(mailSendAPI.getResponse().getBody().asString(), containsString(message));
+    }
 }

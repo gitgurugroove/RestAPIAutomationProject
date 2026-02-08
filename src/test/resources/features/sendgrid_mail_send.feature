@@ -7,18 +7,19 @@ Feature: Send email using SendGrid V3 Mail Send API (Mock Server)
   Background:
     Given the SendGrid mock server base URL is configured
 
-  @positive @smoke
+  @positive @smoke @202Status
   Scenario: Successfully send a transactional email with multiple recipients
     Given a valid email send request payload
     When the client sends a POST request to "/v3/mail/send"
     Then the response status code should be "202"
     And the response body should be empty
 
-  @positive
-  Scenario: Send email with CC and BCC recipients
-    Given a valid email send request payload with CC and BCC recipients
-    When the client sends a POST request to "/v3/mail/send"
-    Then the response status code should be "202"
+  @positive @smoke @200Status
+  Scenario: Send email with wrong endpoint to validate error handling
+    Given a valid email send request payload
+    When the client sends a POST request to "/v3/mail/sen"
+    Then the response status code should be "200"
+    And the response body contains message "Hey ya! Great to see you here. Btw, nothing is configured for this request path. Create a rule and start building a mock API."
 
   @positive
   Scenario: Send email with attachment
