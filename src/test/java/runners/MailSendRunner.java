@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
                 "junit:target/site/serenity/cucumber-reports.xml",
         },
         monochrome = false,                          // Makes console output readable
-        tags = "@smoke",                        // Tags to include in the test run
+        tags = "@sendGridMail",                        // Tags to include in the test run
         dryRun = false                          // Set to true to check mappings without executing the tests
 )
 public class MailSendRunner {}

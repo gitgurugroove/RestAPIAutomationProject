@@ -35,8 +35,8 @@ public class SendGridPayloadBuilder {
         return readJsonFile("sendGridMailSend.json");
     }
 
-    public static String payloadWithAttachment() {
-        return readJsonFile("sendgrid_with_attachment.json");
+    public static String EmailPayload400Status() {
+        return readJsonFile("sendGridMailSend400.json");
     }
 
     public static String invalidEmailPayload() {
