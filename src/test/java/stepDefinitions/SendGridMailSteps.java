@@ -32,10 +32,11 @@ public class SendGridMailSteps {
         requestPayload = SendGridPayloadBuilder.validEmailPayload();
     }
 
-    @Given("a valid email send request payload with CC and BCC recipients")
-    public void payloadWithCcAndBcc() {
-        requestPayload = SendGridPayloadBuilder.validEmailPayload();
+    @Given("an email send request payload without a from address")
+    public void an_email_send_request_payload_without_a_from_address() {
+        requestPayload = SendGridPayloadBuilder.EmailPayload400Status();
     }
+
 
     @Given("a valid email send request payload with an attachment")
     public void payloadWithAttachment() {
@@ -52,6 +53,11 @@ public class SendGridMailSteps {
         mailSendAPI.sendMail(endpoint, requestPayload);
     }
 
+    @When("the client sends a POST request to {string} with incorrect base URL")
+    public void theClientSendsAPOSTRequestToWithIncorrectBaseURL(String endpoint) {
+        mailSendAPI.sendMail404(endpoint, requestPayload);
+    }
+
     @Then("the response status code should be {string}")
     public void theResponseStatusCodeShouldBe(String statusCode) {
         assertThat(mailSendAPI.getResponse().getStatusCode(), is(Integer.parseInt(statusCode)));
@@ -66,4 +72,19 @@ public class SendGridMailSteps {
     public void theResponseBodyContainsMessage(String message) {
         assertThat(mailSendAPI.getResponse().getBody().asString(), containsString(message));
     }
+
+    @And("the response body should contain an error message indicating the missing fields from the request payload")
+    public void theResponseBodyShouldContainAnErrorMessageIndicatingTheMissingFieldsFromTheRequestPayload() {
+        String responseBody = mailSendAPI.getResponse().getBody().prettyPrint();
+        String errorMessage = mailSendAPI.getResponse().jsonPath().getString("errors[0].message");
+
+        System.out.println("Error message from response: " + errorMessage);
+
+        assertThat(
+                "Expected error message to indicate invalid email format",
+                errorMessage,
+                containsString("personalizations.1.from.email must match format \"email\"")
+        );
+    }
+
 }

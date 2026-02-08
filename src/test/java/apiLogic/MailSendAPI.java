@@ -14,6 +14,8 @@ public class MailSendAPI {
 
     private static final String BASE_URL =
             "https://sendgrid-v3-api.mock.beeceptor.com";
+    private static final String INVALID_BASE_URL =
+            "https://sendgri-v3-api.mock.beeceptor.com";
 
     /**
      * Configure base URI for RestAssured
@@ -43,16 +45,39 @@ public class MailSendAPI {
         log.info(
                 "Response Status Code: {}\nResponse Body:\n{}",
                 response.getStatusCode(),
-                response.getBody().asString()
+                response.getBody().asPrettyString()
         );
 
-        Serenity.recordReportData()
-                .withTitle("SendGrid - Request Payload")
-                .andContents(payload);
+//        Serenity.recordReportData()
+//                .withTitle("SendGrid - Request Payload")
+//                .andContents(payload);
+//
+//        Serenity.recordReportData()
+//                .withTitle("SendGrid - Response (" + response.getStatusCode() + ")")
+//                .andContents(response.getStatusLine() + "\n\n" + response.getBody().asString());
+    }
+    public void sendMail404(String endpoint, String payload) {
 
-        Serenity.recordReportData()
-                .withTitle("SendGrid - Response (" + response.getStatusCode() + ")")
-                .andContents(response.getStatusLine() + "\n\n" + response.getBody().asString());
+        response = RestAssured
+                .given()
+                .log().all()                       // request logged
+                .relaxedHTTPSValidation()
+                .baseUri(INVALID_BASE_URL)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .when()
+                .post(endpoint)
+                .then()
+                .log().all()                       // response logged
+                .extract()
+                .response();
+
+        log.info(
+                "Response Status Code: {}\nResponse Body:\n{}",
+                response.getStatusCode(),
+                response.getBody().asPrettyString()
+        );
+
     }
 
     /**

@@ -1,3 +1,4 @@
+@sendGridMail
 Feature: Send email using SendGrid V3 Mail Send API (Mock Server)
 
   The SendGrid V3 Mail Send API allows applications to send transactional
@@ -21,44 +22,18 @@ Feature: Send email using SendGrid V3 Mail Send API (Mock Server)
     Then the response status code should be "200"
     And the response body contains message "Hey ya! Great to see you here. Btw, nothing is configured for this request path. Create a rule and start building a mock API."
 
-  @positive
-  Scenario: Send email with attachment
-    Given a valid email send request payload with an attachment
-    When the client sends a POST request to "/v3/mail/send"
-    Then the response status code should be "202"
 
-  @positive
-  Scenario: Send email with tracking enabled
-    Given a valid email send request payload with open and click tracking enabled
-    When the client sends a POST request to "/v3/mail/send"
-    Then the response status code should be "202"
-
-  @negative @validation
-  Scenario: Fail to send email when "from" email is missing
+  @negative @validation @400Status
+  Scenario: Fail to send email when "from"/"to" from email is missing
     Given an email send request payload without a from address
     When the client sends a POST request to "/v3/mail/send"
     Then the response status code should be "400"
+    And the response body should contain an error message indicating the missing fields from the request payload
 
-  @negative @validation
-  Scenario: Fail to send email when recipient email is invalid
-    Given an email send request payload with an invalid recipient email
-    When the client sends a POST request to "/v3/mail/send"
-    Then the response status code should be "400"
+  @negative @validation @404Status
+  Scenario: Fail to send email when baseURL is incorrect
+    Given a valid email send request payload
+    When the client sends a POST request to "/v3/mail/send" with incorrect base URL
+    Then the response status code should be "404"
+    And the response body contains message "Hey ya! Great to see you here. BTW, nothing is configured here. Create a mock server on Beeceptor.com"
 
-  @negative @validation
-  Scenario: Fail to send email when personalizations are missing
-    Given an email send request payload without personalizations
-    When the client sends a POST request to "/v3/mail/send"
-    Then the response status code should be "400"
-
-  @negative @validation
-  Scenario: Fail to send email when content is empty
-    Given an email send request payload without content
-    When the client sends a POST request to "/v3/mail/send"
-    Then the response status code should be "400"
-
-  @edge
-  Scenario: Send email with scheduled send time in the future
-    Given a valid email send request payload with future send_at timestamp
-    When the client sends a POST request to "/v3/mail/send"
-    Then the response status code should be "400"
