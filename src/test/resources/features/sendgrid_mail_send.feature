@@ -14,7 +14,7 @@ Feature: Send email using SendGrid V3 Mail Send API (Mock Server)
     Then the response status code should be "202"
     And the response body should be empty
 
-  @positive @200Status
+  @positive @smoke @200Status
   Scenario: Send email with wrong endpoint to validate error handling
     Given a valid email send request payload
     When the client sends a POST request to "/v3/mail/sen"

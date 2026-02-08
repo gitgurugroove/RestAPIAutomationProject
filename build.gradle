@@ -27,7 +27,7 @@ dependencies {
 
     testImplementation 'net.serenity-bdd:serenity-cucumber:4.1.20'
     testImplementation 'io.cucumber:cucumber-java:7.16.1'
-    testImplementation "io.cucumber:cucumber-junit:7.16.1"
+//    testImplementation "io.cucumber:cucumber-junit:7.16.1"
 //    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.16.1'
 
     testImplementation 'io.rest-assured:rest-assured:5.4.0'
@@ -61,14 +61,42 @@ configurations.all {
     }
 }
 
+sourceSets {
+    bdd {
+        java.srcDir 'src/test/java'
+        resources.srcDir 'src/test/resources'
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+/**
+ * Make bdd source set visible to tests
+ */
+configurations {
+    bddImplementation.extendsFrom testImplementation
+    bddRuntimeOnly.extendsFrom testRuntimeOnly
+}
 test {
-//    useJUnitPlatform()
     useJUnit()
-//    systemProperty "serenity.outputDirectory", "$buildDir/target/site/serenity"
     systemProperty "serenity.parallel.execution", "true"
     systemProperty "serenity.outputDirectory", "target/site/serenity"
     systemProperties(System.getProperties())
+}
+tasks.register('bddTest', Test) {
+    description = 'Runs Serenity BDD tests'
+    group = 'verification'
 
+    testClassesDirs = sourceSets.bdd.output.classesDirs
+    classpath = sourceSets.bdd.runtimeClasspath
+
+    include '**/MailSendRunner.class'
+    useJUnit()
+
+    systemProperties(System.getProperties())
+}
+
+tasks.named('aggregate') {
+    dependsOn test, bddTest
 }
 
 tasks.register('runCucumber', Test) {
